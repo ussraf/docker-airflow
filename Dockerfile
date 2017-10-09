@@ -41,10 +41,14 @@ RUN set -ex \
         $buildDeps \
         python3-pip \
         python3-requests \
+        python3-dev \
         apt-utils \
         curl \
         netcat \
         locales \
+        libmysqlclient-dev \
+        freetds-dev \
+        freetds-bin \
     && sed -i 's/^# en_US.UTF-8 UTF-8$/en_US.UTF-8 UTF-8/g' /etc/locale.gen \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
@@ -55,7 +59,8 @@ RUN set -ex \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
-    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc]==$AIRFLOW_VERSION \
+    && pip install pymssql \
+    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,s3,mysql,mssql,slack]==$AIRFLOW_VERSION \
     && pip install celery[redis]==3.1.17 \
     && apt-get purge --auto-remove -yqq $buildDeps \
     && apt-get clean \
